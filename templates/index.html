@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="google-site-verification" content="T0BqcCmdhvhHOWW8GP243SzfzqXrZKI7GDi5bWxDtFQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Artificial intelligence turning your photos into art">
+    <meta name="keywords" content="neural style, deep art, deepart, neural-style, artificial art, neural art, deep learning, instagram filters, filters, van gogh, painting from photos">
+    <title>Style Transfer</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,800,300,400italic,300italic,600,600italic,700,700italic,800italic' rel='stylesheet' type='text/css'>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://deepart-io.s3.amazonaws.com/CACHE/css/1aeb4473ff54.css" type="text/css" />
+    
+    <link rel="stylesheet" href="https://deepart-io.s3.amazonaws.com/CACHE/css/44ccd66c877e.css" type="text/css" />
+<style type="text/css">
+div.center{
+    width:536px;
+    height:536px;
+    border: 2px dashed;border-color: #075989;border-radius:5px;
+    margin: 25px auto;
+}
+</style>
+
+    
+    <!--[if lt IE 9]>
+      <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<!-- Load Facebook SDK for JavaScript -->
+<!-- <script type="text/javascript" src="//vk.com/js/api/openapi.js?121"></script> -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href=""><img src="https://s1.ax1x.com/2020/05/19/YI0qKA.png" id="logo"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li><a href="">Style Transfer</a></li>
+        </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="content-container">
+      <div class="container">
+      <div class="page-header">
+        <h1></h1>
+      </div>
+    </div>
+      
+          <div class="container">
+            
+
+<div class="row" style="margin-top: -60px">
+    <div class="col-md-6">
+        <h1>Photo</h1>
+        <ul class="nav nav-tabs">
+            
+            <li><a data-toggle="tab" href="#upload-photo" class="tab">Upload photo</a></li>
+        </ul>
+        <div class="tab-content" data-input="id_content_img">
+            <div id="my-photos" class="tab-pane fade">
+                <div class="container-fluid">
+                    
+                        <p class="no-imgs">You haven't uploaded any photos yet.</p>
+                    
+                </div>
+            </div>
+            <div id="upload-photo" class="tab-pane fade in active">
+                <form enctype="multipart/form-data" method="post" id="content-image-form" class="dropzone needsclick dz-clickable selected" action="/upload/content/UNIQUE_ID" data-hash="">
+                    <div class="dz-message needsclick">
+                        <p>Drop your photo here or<br />click to select one from your computer.</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h1>Style</h1>
+        <ul class="nav nav-tabs">
+            
+            <li><a data-toggle="tab" href="#upload-style" class="tab">Upload style</a></li>
+            
+        </ul>
+        <div class="tab-content" data-input="id_style_img">
+                    
+    
+            <div id="my-styles" class="tab-pane fade">
+                <div class="container-fluid">
+                    
+                        <p class="no-imgs">You haven't uploaded any styles yet.</p>
+                    
+                </div>
+            </div>
+            <div id="upload-style" class="tab-pane fade">
+                <form enctype="multipart/form-data" method="post" id="style-image-form" class="dropzone needsclick dz-clickable selected" action="/upload/style/UNIQUE_ID" data-hash="">
+                    <div class="dz-message needsclick">
+                        <p>Drop a style image file here or click to select one from your computer.</p>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+    <p></p>
+    <input id="id_content_img" maxlength="40" name="content_img" type="hidden" />
+
+<input id="id_style_img" maxlength="40" name="style_img" type="hidden" />
+
+<div style="margin:50px auto;width:500px">
+<input type="range" id="alpha" min="0" max="1000" step="1" value="1000" />
+</div>
+
+<div style="text-align:center">
+<input type="checkbox" id="preserving-color"/>&nbsp Preserving color
+</div>
+
+<div style="margin:50px auto">
+    <div id="style_transfer" class="text-center">
+        <button type="submit" class="btn btn-primary">
+                Submit
+        </button>
+    </div>
+</div>
+
+
+
+<div class="center">
+    <p style="margin:210px" id="p-process">
+    </p>
+    <div style="text-align:center">
+        <img style="margin:10px" src="" id="img-result" />
+    </div>
+</div>
+
+<div style="text-align:center">
+<div style="margin:50px auto">
+<a href="/static/result_UNIQUE_ID.jpg" download="result">
+<button class="btn btn-primary">
+    Download
+</button>
+</a>
+</div>
+</div>
+
+          </div>
+    </div>
+
+    <script type="text/javascript" src="https://deepart-io.s3.amazonaws.com/CACHE/js/ad004c2f14b6.js"></script>
+    
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://deepart-io.s3.amazonaws.com/js/dropzone.js"></script>
+
+    
+        <script type=text/javascript>
+            $('#id_password').parents('.form-group:first').hide();
+            user_exists();
+        </script>
+    
+
+    <script type=text/javascript>
+        
+
+        // Set up Dropzone
+        $(function() {
+            options = {
+                parallelUploads: 1,
+                paramName: "image",
+                thumbnailWidth: 150,
+                thumbnailHeight: 150,
+                maxFiles: 1,
+            };
+
+            content = $.extend({
+                success: function(file, response) {
+                    $('#id_content_img').attr('value', response['hash']);
+                    $('#content-image-form').attr('data-hash', response['hash']);
+                }
+            }, options);
+            Dropzone.options.contentImageForm = content;
+
+            style = $.extend({
+                success: function(file, response) {
+                    $('#id_style_img').attr('value', response['hash']);
+                    $('#style-image-form').attr('data-hash', response['hash']);
+                }
+            }, options);
+            Dropzone.options.styleImageForm = style;
+        });
+        
+        // Select image
+        $('.img a').click(function (e) {
+            e.preventDefault()
+            $(this).parents('.tab-pane').find('.img').removeClass('selected')
+            $(this).parent().addClass('selected')
+            input = $(this).parents('.tab-content').attr('data-input')
+            hash = $(this).parent().attr('data-hash')
+            $('#' + input).attr('value', hash)
+        })
+
+        // When tab changes update form to reflect the image selected in that tab
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            tab = $(e.target).attr('href')
+            input = $(tab).parents('.tab-content').attr('data-input')
+            selected = $(tab).find('.selected')
+            hash = $(selected).length ? $(selected).attr('data-hash') : ''
+            $('#' + input).attr('value', hash)
+        }); 
+        // Activate default tabs
+        $('.nav-tabs a[href="#upload-photo"]').tab('show')
+        
+            $('.nav-tabs a[href="#upload-style"]').tab('show')
+        
+       $(function () {
+           $("#style_transfer").click(function () {
+                if($('#p-process').length>0){
+                document.getElementById("p-process").innerHTML = "Processing...";
+                }
+               $.ajax({
+                   url: "/process/UNIQUE_ID",
+                   data: document.getElementById("alpha").value.toString() + " " + document.getElementById("preserving-color").checked.toString(),
+                   type: "get",
+                   dataType: "text",
+                   success: function (result) {
+                        if($('#p-process').length>0){
+                        $("#p-process").remove();
+                        }
+                        document.getElementById("img-result").src = "/static/result_UNIQUE_ID_512.jpg"+"?s="+(new Date()).getTime();
+                   },
+               })
+           })
+       })
+
+    </script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+  </body>
+</html>
